@@ -1,0 +1,339 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox">
+    <div class="ibox-title">
+        <h3 style="font-size: 26px;color:black;">创建区域经理</h3>
+    </div>
+
+    <div class="ibox-content m-b-sm border-bottom">
+      <form class="row form-group form-horizontal" name="addForm" ng-submit="vm.submitForm(vm.manager)" role="form">
+        <div class="form-group">
+          <div class="col-md-6">
+            <div class="btn-group col-md-offset-1">
+               <button class="btn" ng-class="{'btn-primary': vm.selectedOpt === 'add', 'btn-default': vm.selectedOpt !== 'add'}" ng-click="vm.selectOpt('add')" type="button">
+               <i class="glyphicon glyphicon-plus"></i> &nbsp;创建
+               </button>
+               <button class="btn" ng-class="{'btn-primary': vm.selectedOpt === 'check', 'btn-default': vm.selectedOpt !== 'check'}" ng-click="vm.selectOpt('check')" type="button">
+               <i class="glyphicon glyphicon-search"></i> &nbsp;查询
+               </button>
+                <button class="btn" ng-if="vm.selectedOpt === 'modify'" ng-class="{'btn-primary': vm.selectedOpt === 'modify', 'btn-default': vm.selectedOpt !== 'modify'}" ng-click="vm.selectOpt('modify')" type="button">
+               <i class="glyphicon glyphicon-pencil"></i> &nbsp;修改
+               </button>
+               </div>
+          </div>
+        </div>
+
+        <div style="margin-top:30px;" ng-if="vm.selectedOpt === 'add' || vm.selectedOpt === 'modify'">
+          <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">账户名称</label>
+            <div class="col-md-3">
+                <input type="text" placeholder="请填写账户名称(6-20位)" class="form-control" ng-model="vm.manager.name" maxlength="20">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">真实姓名</label>
+            <div class="col-md-3">
+                <input type="text" placeholder="请填写您的姓名" class="form-control" ng-model="vm.manager.realName" maxlength="20">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">联系方式</label>
+            <div class="col-md-3">
+                <input type="text" placeholder="请填写您的手机号" class="form-control" ng-model="vm.manager.phone"  maxlength="11">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">密码</label>
+            <div class="col-md-3">
+                <span class="input-group">
+                 <input type="text" placeholder="请设置账户密码(8-20位)" class="form-control" ng-model="vm.manager.encryptedPassword" maxlength="20" ng-disabled="vm.passwordStatus==='forbid'">  <!-- style="width:292px;" -->
+                <span class="input-group-btn" ng-if="vm.selectedOpt === 'modify'">
+                    <button class="btn btn-primary" type="button" ng-click="vm.resetPasswd()">修改密码</button>
+                </span>
+              </span>
+            </div>
+             
+          </div>
+           <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">
+                <span>所在城市</span>
+            </label>
+              <div class="col-md-3">
+                <select class="form-control" ng-model="vm.cityName" ng-change="vm.selectCity(vm.cityName)" ng-if="vm.selectedOpt === 'add'">
+                  <option value="" selected>-- 请选择 --</option>
+                  <option ng-repeat="city in vm.citys">{{city.name}}</option>
+                </select>
+                <input class="form-control" ng-if="vm.selectedOpt === 'modify'" ng-disabled="vm.selectedOpt==='modify'" value="{{vm.manager.cityName}}">
+              </div>
+          </div>
+
+           <div class="form-group">
+            <label class="col-md-2 control-label" style="font-size: 20px;color:black;">选择学校</label> 
+          </div>
+
+          <div class="form-group">
+            <!-- <label class="col-md-2 control-label" style="font-size: 20px;color:black;">选择学校</label> -->
+            <div class="col-md-5 col-md-offset-1">
+             <!-- <div class="form-group">
+                <div class="col-md-8 pull-right">
+                    <span class="input-group">
+                          <input type="text" placeholder="输入学校名称查询" class="form-control" maxlength="30"
+                           ng-model="vm.searchTextByCampus">
+                        <span class="input-group-btn">
+                          <button class="btn btn-primary" ng-click="vm.checkCampus()" type="button">
+                            <i class="glyphicon glyphicon-search"></i> &nbsp;查询
+                          </button>
+                        </span>
+                    </span>
+                  </div>
+              </div> -->
+               <div class="form-group" style="margin-top:50px;">
+                  <div class="text-center">
+                     <h3 style="font-size: 24px;color:black;">已绑定学校</h3>
+                  </div>
+                </div>
+
+               <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <td class="text-center"><span>学校</span></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in vm.bindCampus">
+                 <td style="font-size: 18px;letter-spacing: 1px;color:black;" data-id="{{row.id}}"><strong>{{row.sectionName}}</strong>
+                   <button class="btn btn-primary pull-right" style="line-height: 10px;width:70px;" ng-click="vm.cancelBind(row)" type="button">解绑</button>
+                 </td>
+                </tr>
+                <tr ng-show="vm.bindCampus.length === 0">
+                  <td colspan="1" class="">暂无数据</td>
+                </tr>
+              </tbody>
+              </table>
+
+              <div class="row" style="margin-top:100px;" ng-if="vm.selectedOpt === 'add'" >
+               <label class="col-md-2 control-label">验证码</label>
+                <div class="col-md-8">
+                  <span class="input-group">
+                     <input type="text" placeholder="请输入手机验证码" class="form-control" ng-model="vm.smsCode" maxlength="6">
+                        <span class="input-group-btn">
+                          <button class="btn btn-primary" ng-click="vm.getSmsCode()" type="button">
+                            <i class="glyphicon glyphicon-phone"></i> &nbsp; 获取验证码{{vm.smsCodeCountDown ? '(' + vm.smsCodeCountDown + ')' : ''}}
+                          </button>
+                        </span>
+                    </span>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:30px;">
+                <div class="col-md-3 col-md-offset-2">
+                   <button class="btn btn-primary btn-block" type="submit">确定</button>
+                  </div>
+                   <div class="col-md-3">
+                   <button class="btn btn-block" type="reset">重置</button>
+                  </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-5">
+             <div class="form-group">
+                <div class="col-md-8 pull-right">
+                    <span class="input-group">
+                          <input type="text" placeholder="输入学校名称查询" class="form-control" maxlength="30"
+                           ng-model="vm.searchTextByCampus">
+                        <span class="input-group-btn">
+                          <button class="btn btn-primary" ng-click="vm.checkCampus()" type="button">
+                            <i class="glyphicon glyphicon-search"></i> &nbsp;查询
+                          </button>
+                        </span>
+                    </span>
+                  </div>
+              </div>
+               <div class="form-group">
+                  <div class="text-center">
+                     <h3 style="font-size: 24px;color:black;">绿色为未绑定学校,红色为已绑定学校</h3>
+                  </div>
+                </div>
+
+               <table class="table table-striped table-hover table-bordered" id="cityAndCompusTable">
+              <thead>
+                <tr>
+                  <td class="text-center"><span>学校</span></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in vm.campusList">
+                  <td>
+                      <!-- <input type="checkbox" data-id="{{row.id}}" style="width:20px;height:20px;vertical-align: middle;">&nbsp;&nbsp; -->
+                      <span ng-if="row.managerId == null" style="color:#18a689;font-size: 18px;letter-spacing: 1px;">{{row.sectionName}}</span>
+                      <span ng-if="row.managerId != null" style="color:#ed5565;font-size: 18px;letter-spacing: 1px;">{{row.sectionName}} &nbsp;({{row.realName}})</span>
+                      <button ng-class="{'btn pull-right btn-primary': row.managerId == null, 'btn pull-right btn-danger': row.managerId != null}" style="line-height: 10px;width:70px;margin-left:20px;" ng-click="vm.configCampus(row)" type="button">添加</button>
+                  </td>
+                </tr>
+                <tr ng-show="vm.campusList.length === 0">
+                  <td colspan="4" class="">暂无数据</td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- <div class="form-group" ng-if="vm.selectedOpt === 'add'">
+           <label class="col-md-1 control-label">验证码</label>
+            <div class="col-md-3">
+              <span class="input-group">
+                 <input type="text" placeholder="请输入手机验证码" class="form-control" ng-model="vm.smsCode" maxlength="6">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" ng-click="vm.getSmsCode()" type="button">
+                        <i class="glyphicon glyphicon-phone"></i> &nbsp; 获取验证码{{vm.smsCodeCountDown ? '(' + vm.smsCodeCountDown + ')' : ''}}
+                      </button>
+                    </span>
+                </span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-1 col-md-offset-1">
+               <button class="btn btn-primary btn-block" type="submit" ng-disabled="vm.submitting || addForm.$invalid">确定</button>
+              </div>
+               <div class="col-md-1">
+               <button class="btn btn-block" type="reset">重置</button>
+              </div>
+          </div> -->
+
+        </div>
+        <div style="margin-top:30px;" ng-if="vm.selectedOpt === 'check'">
+            <div class="row">
+              <div class="col-md-12" style="padding-left:40px;">
+                <div class="alert alert-warning" role="alert" ng-if="vm.noBindingCampusList.length >0">
+                公告：您当前有<span style="color:red;">{{vm.noBindingCampusList.length}}</span>所学校未被绑定，分别为
+                <span ng-repeat="row in vm.noBindingCampusList track by $index">
+                  <span style="color:red;">{{row.sectionName}},</span>
+                </span>
+                请及时绑定!
+                </div>
+              </div>
+            </div>
+          <div class="row">
+              <div class="col-md-3">
+                  <div class="btn-group col-md-offset-1">
+                    <button class="btn" ng-class="{'btn-primary': vm.selectedIsBinding === 'binding', 'btn-default': vm.selectedIsBinding !== 'binding'}" ng-click="vm.selectIsBinding('binding')" type="button">可用账户</button>
+                    <button class="btn" ng-class="{'btn-primary': vm.selectedIsBinding === 'nobinding', 'btn-default': vm.selectedIsBinding !== 'nobinding'}" ng-click="vm.selectIsBinding('nobinding')" type="button">禁用账户</button>
+                  </div>
+              </div>
+              
+              <div class="col-md-3 pull-right">
+                  <span class="input-group">
+                      <input type="text" placeholder="输入负责人,负责学校查询" class="form-control" maxlength="30" ng-model="vm.searchTextForBind">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" ng-click="vm.onSearchForBind()" type="button">
+                        <i class="glyphicon glyphicon-search"></i> &nbsp;查询
+                      </button>
+                    </span>
+                  </span>
+              </div>
+          </div>
+
+          <div class="ibox-content" style="margin-top:30px;">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <td class="text-center">区域经理</td>
+                  <td class="text-center">联系方式</td>
+                  <td class="text-center">负责学校</td>
+                  <td class="text-center" style="width:20%;">操作</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in vm.rowData | orderBy: '-managerUpdatedAt' track by $index">
+                  <td class="text-center">{{row.realName}}</td>
+                  <td class="text-center">{{row.phone}}</td>
+                  <td class="text-center">{{row.sectionName}}</td>
+                  <td class="text-center">
+                    <button class="btn btn-primary" style="line-height: 10px;width:70px;" ng-click="vm.modify(row.id,row.name,row.realName,row.phone,row.managerId,row.cityId, row.cityName)" type="button" ng-if="vm.selectedIsBinding === 'binding'">修改</button>
+                    <button class="btn btn-danger" style="line-height: 10px;width:70px;margin-left:20px;" ng-click="vm.deleteOne(row.managerId,row.realName)" type="button" ng-if="vm.selectedIsBinding === 'binding'">禁用</button>
+                    <button class="btn btn-primary" style="line-height: 10px;width:70px;margin-left:20px;" ng-click="vm.useAccount(row.managerId,row.realName)" type="button" ng-if="vm.selectedIsBinding === 'nobinding'">启用</button>
+                  </td>
+                </tr>
+                <tr ng-show="vm.rowData.length === 0">
+                  <td colspan="4" class="">暂无数据</td>
+                </tr>
+              </tbody>
+              </table>
+
+              <!-- <table class="table table-striped table-hover table-bordered" ng-if="vm.selectedIsBinding === 'nobinding'">
+              <thead>
+                <tr>
+                  <td class="text-center">城市</td>
+                  <td class="text-center">区域</td>
+                  <td class="text-center">学校</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in vm.rowData">
+                  <td class="text-center">{{row.cityName}}</td>
+                  <td class="text-center">{{row.regionName}}</td>
+                  <td class="text-center">{{row.sectionName}}</td>
+                </tr>
+                <tr ng-show="vm.rowData.length === 0">
+                  <td colspan="3" class="">暂无数据</td>
+                </tr>
+              </tbody>
+              </table> -->
+
+            </div>
+          <!-- </div> -->
+
+        </div>
+
+      </form>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false"  id="deleteConfirmDialog" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="false">
+          &times;
+        </button>
+        <h4 class="modal-title">消息提示</h4>
+      </div>
+      <div class="modal-body" style="line-height: 24px;">
+          您确定要禁用<span style="color:red;">{{vm.optRealName}}</span>区域经理账户吗？<br>
+          如若禁用：1.将与所负责学校解绑 &nbsp;2.区域经理账户将无法使用 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="vm.deleteYes()">确认</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false"  id="useConfirmDialog" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="false">
+          &times;
+        </button>
+        <h4 class="modal-title">消息提示</h4>
+      </div>
+      <div class="modal-body" style="line-height: 24px;">
+          您确定要启用<span style="color:red;">{{vm.optRealName}}</span>区域经理账户吗？<br>
+          如若启用，请重新修改负责学校信息
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="vm.useYes()">确认</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+

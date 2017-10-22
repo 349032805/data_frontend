@@ -1,0 +1,146 @@
+// scss-lint:disable SelectorDepth NestingDepth
+.back-login {
+  background: {
+    color: #41a5df;
+    image: linear-gradient(to right bottom, #41a5df, #41dfb1);
+  }
+  color: #fff;
+  height: 100%;
+  min-height: 768px;
+  padding-top: 140px;
+  position: absolute;
+  width: 100%;
+
+  .content {
+    min-height: 450px;
+
+    text-align: center;
+    width: 100%;
+    // background-image: url('http://zhaime.qiniudn.com/uploads/activity/20150602loginmac.png');
+    // background-repeat: no-repeat;
+    // background-position: bottom right;
+    //margin: auto;
+  }
+
+  .login-form {
+    display: inline-block;
+    max-width: 340px;
+    vertical-align: top;
+
+    h2 {
+      font-size: 23px;
+      font-weight: normal;
+      height: 72px;
+      line-height: 72px;
+      vertical-align: top;
+
+      span {
+        border-right: 1px solid #fff;
+        font-size: 26px;
+        margin-right: 6px;
+        padding-right: 6px;
+        vertical-align: top;
+      }
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .login-icon {
+      border-radius: 3px;
+      cursor: pointer;
+      display: inline-block;
+      height: 60px;
+      margin-right: 10px;
+      text-align: center;
+      width: 60px;
+
+      .icon {
+        // scss-lint:disable UrlFormat
+        background-image: url('//zhaime.qiniudn.com/uploads/activity/20150602loginicons.png');
+        // scss-lint:enable UrlFormat
+        background-repeat: no-repeat;
+        height: 25px;
+        margin: 8px auto 6px;
+      }
+
+      &.active {
+        border: 1px solid #fff;
+      }
+    }
+
+  }
+
+  $bg-color: rgba(255, 255, 255, .15);
+
+  input {
+    background: $bg-color;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    margin: 20px 0;
+    padding: 0 3%;
+  }
+
+  .sms-code-input {
+    margin: 20px 0;
+
+    .form-control {
+      margin: 0;
+    }
+
+    .input-group-addon {
+      background: $bg-color;
+      border: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 4px;
+      border-left: 1px solid;
+      border-top-left-radius: 0;
+      border-top-right-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+
+      &[disabled] {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // scss-lint:disable VendorPrefix
+  ::-webkit-input-placeholder { // WebKit browsers
+    color: #b4deeb;
+  }
+
+  :-moz-placeholder { // Mozilla Firefox 4 to 18
+    color: #b4deeb;
+    opacity: 1;
+  }
+
+  ::-moz-placeholder { // Mozilla Firefox 19+
+    color: #b4deeb;
+    opacity: 1;
+  }
+
+  :-ms-input-placeholder { // Internet Explorer 10+
+    color: #b4deeb;
+  }
+
+  button {
+    background: none;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    height: 40px;
+
+    &:hover {
+      background: #fff;
+      color: #41bfca;
+    }
+  }
+}

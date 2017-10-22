@@ -1,0 +1,111 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">红包期号</label>
+      <div class="col-md-3">
+        <div ui-select ng-model="vm.selectedBonusNum" ng-change="vm.selectBonusNum()">
+          <div ui-select-match placeholder="红包期号">{{$select.selected.number + ($select.selected.isEnable ? ' - 已启用' : ' - 未启用')}}</div>
+          <div ui-select-choices repeat="num in vm.bonusNums | filter: $select.search">
+            <span ng-bind-html="num.number + (num.isEnable ? ' - 已启用' : ' - 未启用') | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">红包规则</label>
+      <div class="col-md-3">
+        <div ui-select ng-model="vm.selectedBonusRule" ng-change="vm.selectBonusRule()">
+          <div ui-select-match placeholder="红包规则">{{$select.selected.description + ($select.selected.isEnable ? ' - 已启用' : ' - 未启用')}}</div>
+          <div ui-select-choices repeat="rule in vm.bonusRules | filter: $select.search">
+            <span ng-bind-html="rule.description + (rule.isEnable ? ' - 已启用' : ' - 未启用') | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <!--<div class="ibox-content m-b-sm border-bottom">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="">已发放红包数：</label>
+        <button class="btn btn-primary" tooltip-placement="bottom" tooltip="个">{{vm.totalData.bonusRecivedNumbers}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已发放红包金额：</label>
+        <button class="btn btn-danger" tooltip-placement="bottom" tooltip="$$$">{{vm.totalData.bonusRecivedAmount | number:2}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已使用红包数：</label>
+        <button class="btn btn-primary" tooltip-placement="bottom" tooltip="个">{{vm.totalData.bonusUsedNumbers}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已使用红包金额：</label>
+        <button class="btn btn-danger" tooltip-placement="bottom" tooltip="$$$">{{vm.totalData.bonusUsedAmount | number:2}}</button>
+      </div>
+    </div>
+  </div>-->
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="btn-group">
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'bonusNum', 'btn-white': vm.lineGroup.first.index !== 'bonusNum'}"
+        ng-click="vm.selectLineGroup('first', 'bonusNum')" type="button">红包数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'bonusMoney', 'btn-white': vm.lineGroup.first.index !== 'bonusMoney'}"
+        ng-click="vm.selectLineGroup('first', 'bonusMoney')" type="button">红包金额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'uniqueUser', 'btn-white': vm.lineGroup.first.index !== 'uniqueUser'}"
+        ng-click="vm.selectLineGroup('first', 'uniqueUser')" type="button">独立手机号数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'sharedTimes', 'btn-white': vm.lineGroup.first.index !== 'sharedTimes'}"
+        ng-click="vm.selectLineGroup('first', 'sharedTimes')" type="button">分享次数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'customerNumbers', 'btn-white': vm.lineGroup.first.index !== 'customerNumbers'}"
+        ng-click="vm.selectLineGroup('first', 'customerNumbers')" type="button">红包人数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'bonusRecivedCompare', 'btn-white': vm.lineGroup.first.index !== 'bonusRecivedCompare'}"
+        ng-click="vm.selectLineGroup('first', 'bonusRecivedCompare')" type="button">红包领取数量比红包分享数量</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.first.option" style="height:300px;"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>已发红包数</th>
+              <td>已发红包金额</td>
+              <td>已使用红包数</td>
+              <th>已使用红包金额</th>
+              <th>新用户领取数</th>
+              <th>新用户使用数</th>
+              <th>可分享次数</th>
+              <th>已分享次数</th>
+              <th>领取人数</th>
+              <th>使用人数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="store-item" ng-repeat="row in vm.bonusDetailData | orderBy:'-createdAt'">
+              <td>{{row.dt}}</td>
+              <td>{{row.bonusRecivedNumbers | number}}</td>
+              <td>{{row.bonusRecivedAmount | number:2}}</td>
+              <td>{{row.bonusUsedNumbers | number}}</td>
+              <td>{{row.bonusUsedAmount | number:2}}</td>
+              <td>{{row.newCustomerReceviedNumbers | number}}</td>
+              <td>{{row.newCustomerUsedNumbers | number}}</td>
+              <td>{{row.bonusQualifiedSharedTimes | number}}</td>
+              <td>{{row.bonusSharedTimes | number}}</td>
+              <td>{{row.customerReceviedNumbers | number}}</td>
+              <td>{{row.customerUsedNumbers | number}}</td>
+            </tr>
+            <tr ng-show="vm.bonusDetailData.length === 0">
+              <td colspan="11" class="">暂无红包数据</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择区域</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedAreas" ng-change="vm.selectAreas(vm)">
+          <div ui-select-match placeholder="区域不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="area in vm.areas | filter: $select.search">
+            <span ng-bind-html="area.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">开始时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+          max-date="vm.yesterday" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <label class="col-md-1 control-label">截止时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.end.model" ng-change="vm.selectEnd()"
+          min-date="vm.datepicker.start.model" max-date="vm.yesterday" is-open="vm.datepicker.end.open" close-text="关闭" current-text="今天"
+          clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('end')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>平均每uv产生订单数</h3>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success pull-right" ng-csv="vm.exportRateCscData" add-bom="true" csv-header="vm.csvHeader"
+            lazy-load="true" ng-disabled="vm.exportRateDatas.length === 0" filename="平均每uv产生订单数{{vm.datepicker.start.model | date}}-{{vm.datepicker.end.model | date}}.csv"
+            field-separator=",">导出</button>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.perUv.option" style="height:300px;"></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>

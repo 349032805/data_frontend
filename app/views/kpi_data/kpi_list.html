@@ -1,0 +1,258 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-5">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <!--<div class="col-md-2">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>-->
+    </div>
+    <div class="row form-group form-horizontal">
+      <!--<label class="col-md-1 control-label">选择时间</label>
+      <div class="col-md-3">
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'thisMonth', 'btn-default': vm.selectedDate !== 'thisMonth'}"
+        ng-click="vm.selectDate('thisMonth')">当月</button>
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'yesterday', 'btn-default': vm.selectedDate !== 'yesterday'}"
+        ng-click="vm.selectDate('yesterday')">昨天</button>
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'beforeYesterday', 'btn-default': vm.selectedDate !== 'beforeYesterday'}"
+        ng-click="vm.selectDate('beforeYesterday')">前天</button>
+      </div>-->
+      <!--<label class="col-md-1 control-label">选择月份</label>
+      <div class="col-md-3">
+        <span class="input-group">
+            <input type="text" class="form-control" datepicker-popup="yyyy-MM" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+            datepicker-mode="vm.datepicker.start.mode" min-mode="vm.datepicker.start.mode" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+        </span>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-3">
+
+      </div>-->
+      <label class="col-md-1 control-label">开始时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+          max-date="vm.yesterday" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <label class="col-md-1 control-label">截止时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.end.model" ng-change="vm.selectEnd()"
+          min-date="vm.datepicker.start.model" max-date="vm.yesterday" is-open="vm.datepicker.end.open" close-text="关闭" current-text="今天"
+          clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('end')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+    </div>
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">选择时间</label>
+      <div class="col-md-3">
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'thisMonth', 'btn-default': vm.selectedDate !== 'thisMonth'}"
+        ng-click="vm.selectDate('thisMonth')" ng-disabled="vm.isFirstDay">当月</button>
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'lastMonth', 'btn-default': vm.selectedDate !== 'lastMonth'}"
+        ng-click="vm.selectDate('lastMonth')">上月</button>
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'yesterday', 'btn-default': vm.selectedDate !== 'yesterday'}"
+        ng-click="vm.selectDate('yesterday')">昨天</button>
+        <button class="btn" ng-class="{'btn-primary': vm.selectedDate === 'beforeYesterday', 'btn-default': vm.selectedDate !== 'beforeYesterday'}"
+        ng-click="vm.selectDate('beforeYesterday')">前天</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="btn-group">
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'miniSupplierSales', 'btn-white': vm.lineGroup.first.index !== 'miniSupplierSales'}"
+        ng-click="vm.selectLineGroup('first', 'miniSupplierSales')" type="button">微仓出货额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'miniSupplierSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'miniSupplierSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'miniSupplierSalesVolume')" type="button">微仓出货订单数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'storeTotalSales', 'btn-white': vm.lineGroup.first.index !== 'storeTotalSales'}"
+        ng-click="vm.selectLineGroup('first', 'storeTotalSales')" type="button">店长总销售额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'storeTotalSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'storeTotalSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'storeTotalSalesVolume')" type="button">店长总销售订单数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'storeSales', 'btn-white': vm.lineGroup.first.index !== 'storeSales'}"
+        ng-click="vm.selectLineGroup('first', 'storeSales')" type="button">店长线上销售额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'storeSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'storeSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'storeSalesVolume')" type="button">店长线上订单数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'additionalOrderTotalSales', 'btn-white': vm.lineGroup.first.index !== 'additionalOrderTotalSales'}"
+        ng-click="vm.selectLineGroup('first', 'additionalOrderTotalSales')" type="button">补单金额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'additionalOrderTotalSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'additionalOrderTotalSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'additionalOrderTotalSalesVolume')" type="button">补单订单数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'storeNumbers', 'btn-white': vm.lineGroup.first.index !== 'storeNumbers'}"
+        ng-click="vm.selectLineGroup('first', 'storeNumbers')" type="button">有效店铺数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'saledStoreNumbers', 'btn-white': vm.lineGroup.first.index !== 'saledStoreNumbers'}"
+        ng-click="vm.selectLineGroup('first', 'saledStoreNumbers')" type="button">有单店铺数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'newStoreNumbers', 'btn-white': vm.lineGroup.first.index !== 'newStoreNumbers'}"
+        ng-click="vm.selectLineGroup('first', 'newStoreNumbers')" type="button">新增店铺数量</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'onlineSales', 'btn-white': vm.lineGroup.first.index !== 'onlineSales'}"
+        ng-click="vm.selectLineGroup('first', 'onlineSales')" type="button">在线支付金额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'onlineSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'onlineSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'onlineSalesVolume')" type="button">在线支付订单数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'onlineSalesRate', 'btn-white': vm.lineGroup.first.index !== 'onlineSalesRate'}"
+        ng-click="vm.selectLineGroup('first', 'onlineSalesRate')" type="button">在线支付比率</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'newCustomerNumber', 'btn-white': vm.lineGroup.first.index !== 'newCustomerNumber'}"
+        ng-click="vm.selectLineGroup('first', 'newCustomerNumber')" type="button">新用户数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'uniqCustomerNumber', 'btn-white': vm.lineGroup.first.index !== 'uniqCustomerNumber'}"
+        ng-click="vm.selectLineGroup('first', 'uniqCustomerNumber')" type="button">独立用户数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'rankByMiniSupplierSales', 'btn-white': vm.lineGroup.first.index !== 'rankByMiniSupplierSales'}"
+        ng-click="vm.selectLineGroup('first', 'rankByMiniSupplierSales')" type="button">微仓销售额排名</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'rankByStoreSalesVolume', 'btn-white': vm.lineGroup.first.index !== 'rankByStoreSalesVolume'}"
+        ng-click="vm.selectLineGroup('first', 'rankByStoreSalesVolume')" type="button">店铺销售量排名</button>
+        <!--<button class="btn" ng-class="{'btn-primary' : vm.lineGroup.first.index === 'miniSupplierProfits', 'btn-white': vm.lineGroup.first.index !== 'miniSupplierProfits'}"
+        ng-click="vm.selectLineGroup('first', 'miniSupplierProfits')" type="button">微仓毛利额</button>-->
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.first.option" style="height:300px;"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-1">
+          <h3>KPI数据</h3>
+        </div>
+        <div class="col-md-3 form-group form-horizontal">
+          <div class="col-md-4">
+            <label class=" control-label">区域：</label>
+          </div>
+          <div class="col-md-8">
+            <div ui-select ng-model="vm.selectedManageArea" on-select="vm.selectManageArea($model)">
+              <div ui-select-match placeholder="请选择区域">{{$select.selected.name}}</div>
+              <div ui-select-choices repeat="area in vm.kpiData | filter: $select.search">
+                <span ng-bind-html="area.name | highlight: $select.search"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="pull-right">
+            <label for="">{{vm.selectedManageArea.dailyData[vm.selectedManageArea.dailyData.length-1].dt}}号微仓出货额排名</label>
+            <button class="btn btn-success">{{vm.selectedManageArea.dailyData[vm.selectedManageArea.dailyData.length-1].rankByMiniSupplierSales || "N/A"}}</button>
+            <label for="">{{vm.selectedManageArea.dailyData[vm.selectedManageArea.dailyData.length-1].dt}}号店铺销售量排名</label>
+            <button class="btn btn-primary">
+              {{vm.selectedManageArea.dailyData[vm.selectedManageArea.dailyData.length-1].rankByStoreSalesVolume || "N/A"}}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ibox-content">
+      <!--<div class="row">
+        <div class="form-group col-sm-9 form-horizontal">
+          <label class="col-sm-1 control-label">地区:</label>
+          <div class="col-sm-9">
+            <ol class="breadcrumb">
+              <li ng-repeat="(level, districts) in vm.dv.districtLevels | orderBy: '-level'">
+                <button class="btn btn-info btn-sm" ng-click="vm.setCurrentLevel(level)">{{districts.name}}</button>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+          <button class="btn btn-primary pull-right" ng-csv="vm.exportCsv" add-bom="true" csv-header="vm.csvHeader" lazy-load="true"
+          filename="KPI数据.csv" field-separator=",">导出</button>
+        </div>
+      </div>-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th style="width:85px;">时间</th>
+                  <th style="width:45px;">区域</th>
+                  <th>微仓出货额</th>
+                  <th>微仓出货订单数</th>
+                  <th>店长总销售额</th>
+                  <th>店长总销售订单数</th>
+                  <th>店长线上销售额</th>
+                  <th>店长线上订单数</th>
+                  <th>补单金额</th>
+                  <th>补单订单数</th>
+                  <th>有效店铺数</th>
+                  <th>有单店铺数</th>
+                  <th>新增店铺数量</th>
+                  <th>在线支付金额</th>
+                  <th>在线支付订单数</th>
+                  <th>新用户数</th>
+                  <th>独立用户数</th>
+                  <!--<th>按销售额排名</th>
+                  <th>按销量排名</th>-->
+                  <!--<th>微仓毛利额</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="store-item" ng-repeat="row in vm.selectedManageArea.dailyData | orderBy:'-dt'">
+                  <td>{{row.dt}}</td>
+                  <td>{{vm.selectedManageArea.name}}</td>
+                  <td>{{row.miniSupplierSales | number:2}}</td>
+                  <td>{{row.miniSupplierSalesVolume | number}}</td>
+                  <td>{{row.storeTotalSales | number:2}}</td>
+                  <td>{{row.storeTotalSalesVolume | number}}</td>
+                  <td>{{row.storeSales | number:2}}</td>
+                  <td>{{row.storeSalesVolume | number}}</td>
+                  <td>{{row.additionalOrderTotalSales | number:2}}</td>
+                  <td>{{row.additionalOrderTotalSalesVolume | number}}</td>
+                  <td>{{row.storeNumbers | number}}</td>
+                  <td>{{row.saledStoreNumbers | number}}</td>
+                  <td>{{row.newStoreNumbers | number}}</td>
+                  <td>{{row.onlineSales | number}}</td>
+                  <td>{{row.onlineSalesVolume | number}}</td>
+                  <td>{{row.newCustomerNumber | number:0}}</td>
+                  <td>{{row.uniqCustomerNumber | number:0}}</td>
+                  <!--<td>{{row.rankBySales}}</td>
+                  <td>{{row.rankByVolume}}</td>-->
+                  <!--<td>{{row.miniSupplierProfits | number:2}}</td>-->
+                </tr>
+                <tr ng-show="vm.selectedManageArea.dailyData.length === 0">
+                  <td colspan="19" class="">没有数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

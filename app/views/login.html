@@ -1,0 +1,23 @@
+<div class="back-login animated fadeInDown">
+  <div class="content">
+    <div class="login-form">
+      <h2>
+        <img src="http://zhaime.qiniudn.com/uploads/activity/20150602loginlogo.png">
+        <span>Chopper</span>数据统计系统
+      </h2>
+      <p>欢迎。请登录。</p>
+      <form name="loginForm" ng-submit="vm.login(vm.data)" class="form" novalidate>
+        <input class="form-control" type="text" placeholder="请输入您的账号" required ng-model="vm.data.username" name="usernameInput">
+        <input class="form-control" type="password" placeholder="请输入您的密码" required="" ng-model="vm.data.password">
+        <div class="input-group sms-code-input">
+          <input class="form-control" type="text" placeholder="请输入短信验证码" ng-model="vm.data.smsCode">
+          <span class="input-group-addon" ng-click="vm.getSmsCode()">
+            获取验证码{{vm.smsCodeCountDown ? '(' + vm.smsCodeCountDown + ')' : ''}}
+          </span>
+        </div>
+        <p class="help-block text-muted">{{vm.errors}}</p>
+        <button type="submit" class="btn btn-block" ng-disabled="vm.submitting || loginForm.$invalid">登入</button>
+      </form>
+    </div>
+  </div>
+</div>

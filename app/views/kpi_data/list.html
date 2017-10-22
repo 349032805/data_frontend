@@ -1,0 +1,106 @@
+<!--<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>KPI数据</h2>
+  </div>
+  <div class="col-lg-2"></div>
+</div>-->
+<div class="wrapper wrapper-content">
+  <!--<div class="row">
+    <div class="col-md-2" ng-repeat="x in ['a','b','c','d','e','f']">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>微仓出货额</h5>
+        </div>
+        <div class="ibox-content">
+          <h2 class="no-margins">3344221100</h2>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="stat-percent font-bold text-info">20.23%
+                <i class="fa fa-level-up"></i>
+              </div>
+              <small>环比</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="stat-percent font-bold text-danger">38.56%
+                <i class="fa fa-level-down"></i>
+              </div>
+              <small>同比</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>-->
+  <div class="row">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h3>KPI数据</h3>
+      </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="form-group col-sm-9 form-horizontal">
+            <label class="col-sm-1 control-label">地区:</label>
+            <div class="col-sm-9">
+              <ol class="breadcrumb">
+                <li ng-repeat="(level, districts) in vm.dv.districtLevels | orderBy: '-level'">
+                  <button class="btn btn-info btn-sm" ng-click="vm.setCurrentLevel(level)">{{districts.name}}</button>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <!--<div class="form-group col-md-3">
+            <button class="btn btn-primary pull-right" ng-csv="vm.exportCsv" add-bom="true" csv-header="vm.csvHeader" lazy-load="true"
+            filename="KPI数据.csv" field-separator=",">导出</button>
+          </div>-->
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th ng-repeat="head in vm.csvHeader">{{head}}</th>
+                    <!-- <th>排名</th>
+                <th>区域</th>
+                <th>用户订单数</th>
+                <th>用户交易额</th>
+                <th>用户客单价</th>
+                <th>用户订单在线支付占比</th>
+                <th>微仓毛利率</th>
+                <th>微仓毛利额</th>
+                <th>渗透率</th>
+                <th>复购用户比例</th>
+                <th>营业夜猫店占比</th>
+                <th>店长楼栋比</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="store-item" ng-repeat="row in vm.dv.getCurrentLevel().districts" ng-click="vm.loadNextLevel(row)">
+                    <td>{{$index+1}}</td>
+                    <td>{{row.name}}</td>
+                    <td style="text-align: right">{{row.data.saleQuantity | number:0}}</td>
+                    <td style="text-align: right">{{row.data.saleMoney | number:2}}</td>
+                    <td style="text-align: right">{{row.data.singMoney | number:2}}</td>
+                    <td style="text-align: right">{{row.data.proportion | rate}}</td>
+                    <!--<td>{{row.data.grossProfitRate | rate}}</td>
+                    <td>{{row.data.grossProfit | number:2}}</td>
+                    <td>{{row.data.purchaseRate | rate}}</td>
+                    <td>{{row.a1}}</td>
+                    <td>{{row.a1}}</td>
+                    <td>{{row.a1}}</td>-->
+                  </tr>
+                  <tr ng-show="storesParent.stores.length === 0">
+                    <td colspan="12" class="">没有数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

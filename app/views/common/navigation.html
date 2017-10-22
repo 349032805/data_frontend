@@ -1,0 +1,164 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul ch-side-navigation class="nav" id="side-menu">
+      <li class="nav-header">
+        <div class="dropdown profile-element" dropdown>
+          <a class="dropdown-toggle" dropdown-toggle href>
+            <span class="clear">
+              <span class="block m-t-xs">
+                <strong class="font-bold">{{root.getManager().name}}</strong>
+              </span>
+            <span class="text-muted text-xs block">chopper<b class="caret"></b></span>
+            </span>
+          </a>
+          <ul class="dropdown-menu animated fadeInRight m-t-xs">
+            <li>
+              <a ng-click="root.logout()">注销</a>
+            </li>
+          </ul>
+        </div>
+        <div class="logo-element">宅</div>
+      </li>
+
+      <li ng-repeat="nav in root.getNavigations()" ng-class="{active: root.$state.includes(nav.sref)}">
+        <a ui-sref="{{nav.sref}}">
+          <i class="fa" ng-class="'{{nav.icon}}'"></i> 
+          <span class="nav-label">{{nav.title}}</span>
+          <span ng-if="nav.childrens" class="fa arrow"></span>
+        </a>
+        <ul ng-if="nav.childrens" class="nav nav-second-level" ng-class="{'in': root.$state.includes(nav.sref)}">
+          <li ng-repeat="nav2 in nav.childrens" ui-sref-active="active">
+            <a ui-sref="{{nav2.sref}}">{{nav2.title}}</a>
+          </li>
+        </ul>
+      </li>
+      
+      <!--<li ng-class="{active: root.$state.includes('main.marketing')}">
+        <a ui-sref="main.marketing"><i class="fa fa-suitcase"></i> <span class="nav-label">营销数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.marketing')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.marketing.basic">业务基础数据</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.marketing.healthy">业务健康数据</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.marketing.activity">活动拉新质量</a>
+          </li>
+        </ul>
+      </li>-->
+      
+      <!--<li ng-class="{active: root.$state.includes('main.realtime')}">
+        <a ui-sref="main.realtime"><i class="fa fa-clock-o"></i> <span class="nav-label">实时数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.realtime')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.realtime.trend">实时走势</a>
+          </li>
+        </ul>
+      </li>-->
+      
+      <!--<li ng-class="{active: root.$state.includes('main.competition')}">
+        <a ui-sref="main.competition"><i class="fa fa-users"></i> <span class="nav-label">竞对数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.competition')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.competition.data">竞对数据</a>
+          </li>
+        </ul>
+      </li>-->
+      
+      <!--<li ng-class="{active: root.$state.includes('main.kpi')}">
+        <a ui-sref="main.kpi"><i class="fa fa-coffee"></i> <span class="nav-label">KPI数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.kpi')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.kpi.data">KPI数据</a>
+          </li>
+        </ul>
+      </li>
+      
+      <li ng-class="{active: root.$state.includes('main.realtime')}" ng-if="root.getManager().districtType === 'country' || root.getManager().districtType === 'zone'">
+        <a ui-sref="main.realtime"><i class="fa fa-clock-o"></i> <span class="nav-label">实时数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.realtime')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.realtime.data">实时数据</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{active: root.$state.includes('main.miniSupplier')}">
+        <a ui-sref="main.miniSupplierData"><i class="fa fa-university"></i> <span class="nav-label">微仓数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.miniSupplier')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.miniSupplier.data">微仓总数据</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{active: root.$state.includes('main.store')}">
+        <a ui-sref="main.store"><i class="fa fa-shopping-cart"></i> <span class="nav-label">店长数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.store')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.store.data">店长总数据</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.store.business">店长营业</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{'active': root.$state.includes('main.basicData')}">
+        <a ui-sref="main.basicData"><i class="fa fa-tasks"></i><span class="nav-label">基本数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.basicData')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.basicData.user">用户交易数据</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{'active': root.$state.includes('main.monitor')}">
+        <a ui-sref="main.monitor"><i class="fa fa-eye"></i><span class="nav-label">数据监控</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.monitor')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.monitor.order">订单监控</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.monitor.sms">短信监控</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{'active': root.$state.includes('main.retention')}">
+        <a ui-sref="main.retention"><i class="fa fa-hourglass-half"></i><span class="nav-label">数据比率</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.retention')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.retention.phone">手机留存率</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.retention.permeation">用户渗透率</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{'active': root.$state.includes('main.event')}" ng-if="root.getManager().districtType === 'country'">
+        <a ui-sref="main.event"><i class="fa fa-money"></i><span class="nav-label">红包数据</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.event')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.event.bonus">给用户的红包</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="main.event.redPaper">给夜猫店的红包</a>
+          </li>
+        </ul>
+      </li>
+
+      <li ng-class="{active: root.$state.includes('main.track')}" ng-if="root.getManager().districtType === 'country'">
+        <a ui-sref="main.track"><i class="fa fa-area-chart"></i> <span class="nav-label">数据追踪</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level" ng-class="{'in': root.$state.includes('main.track')}">
+          <li ui-sref-active="active">
+            <a ui-sref="main.track.data">Track数据</a>
+          </li>
+        </ul>
+      </li>-->
+
+    </ul>
+  </div>
+</nav>

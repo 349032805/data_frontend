@@ -1,0 +1,119 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择区域</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedAreas" ng-change="vm.selectAreas(vm)">
+          <div ui-select-match placeholder="区域不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="area in vm.areas | filter: $select.search">
+            <span ng-bind-html="area.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">开始时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+          max-date="vm.yesterday" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <label class="col-md-1 control-label">截止时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.end.model" ng-change="vm.selectEnd()"
+          min-date="vm.datepicker.start.model" max-date="vm.yesterday" is-open="vm.datepicker.end.open" close-text="关闭" current-text="今天"
+          clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('end')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="btn-group">
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'rate', 'btn-white': vm.lineGroup.index !== 'rate'}"
+        ng-click="vm.selectLineGroup('rate')" type="button">用户渗透率</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'phoneCount', 'btn-white': vm.lineGroup.index !== 'phoneCount'}"
+        ng-click="vm.selectLineGroup('phoneCount')" type="button">用户数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'storeRate', 'btn-white': vm.lineGroup.index !== 'storeRate'}"
+        ng-click="vm.selectLineGroup('storeRate')" type="button">活跃店铺率</button>
+        <!--<button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'storeNumber', 'btn-white': vm.lineGroup.index !== 'storeNumber'}"
+        ng-click="vm.selectLineGroup('storeNumber')" type="button">店铺数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'activeStoreNumbers', 'btn-white': vm.lineGroup.index !== 'activeStoreNumbers'}"
+        ng-click="vm.selectLineGroup('activeStoreNumbers')" type="button">活跃店铺数</button>-->
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.option" style="height:300px;"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <h3>用户渗透率-楼栋粒度</h3>
+        </div>
+        <div class="col-md-6">
+          <!--<button class="btn btn-success pull-right" ng-csv="vm.exportPermeationCsv" add-bom="true" csv-header="vm.permeationCsvHeader" lazy-load="true"
+          ng-disabled="vm.permeationData.length === 0" filename="用户渗透率{{vm.query.start}}至{{vm.query.end}}.csv" field-separator=",">导出</button>-->
+          <button tooltip-placement="top" tooltip="按截至时间导出一天数据" class="btn btn-success pull-right" ng-click="vm.exportSectionNumbers()">导出</button>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table ng-table="vm.tableParams" class="table table-striped table-hover table-bordered">
+          <tr ng-repeat="row in $data">
+            <td style="width:85px;" data-title="'日期'" data-sortable="'dt'">{{row.dt}}</td>
+            <td style="width:80px;" data-title="'大区'">{{row.zoneName}}</td>
+            <td style="width:80px;" data-title="'城市'">{{row.cityName}}</td>
+            <td style="width:100px;" data-title="'区域'">{{row.regionName}}</td>
+            <td data-title="'学校'">{{row.sectionName}}</td>
+            <td data-title="'楼栋'">{{row.buildingName}}</td>
+            <td data-title="'人数'" data-sortable="'studentNumber'">{{row.studentNumber | number}}</td>
+            <td data-title="'用户数'" data-sortable="'phoneCount'">{{row.phoneCount | number}}</td>
+            <td data-title="'渗透率'" data-sortable="'rate'">{{row.rate | rate}}</td>
+            <td data-title="'店铺数'" data-sortable="'storeNumbers'">{{row.storeNumbers | number}}</td>
+            <td data-title="'活跃店铺数'" data-sortable="'activeStoreNumbers'">{{row.activeStoreNumbers | number}}</td>
+            <td data-title="'活跃店铺率'" data-sortable="'storeRate'">{{row.storeRate | rate}}</td>
+          </tr>
+          <tr ng-show="$data.length === 0">
+            <td colspan="12" class="">没有数据</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

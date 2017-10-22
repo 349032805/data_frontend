@@ -1,0 +1,140 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="col-md-3"><h3>用户留存率</h3></div>
+          <div>
+              <div class="col-md-4">
+               <button class="btn" ng-class="{'btn-primary': vm.selectedYear === 2015, 'btn-default': vm.selectedYear !== 2015}" ng-click="vm.selectYear(2015)">2015</button>
+                <button class="btn" ng-class="{'btn-primary': vm.selectedYear === 2016, 'btn-default': vm.selectedYear !== 2016}" ng-click="vm.selectYear(2016)">2016</button>
+              </div>
+              <div>
+                <button class="btn" ng-class="{'btn-primary': vm.selectedPeriod === 'week', 'btn-default': vm.selectedPeriod !== 'week'}" ng-click="vm.selectPeriod('week')">周留存</button>
+                <button class="btn" ng-class="{'btn-primary': vm.selectedPeriod === 'month', 'btn-default': vm.selectedPeriod !== 'month'}" ng-click="vm.selectPeriod('month')">月留存</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <div class="row">
+          <div class="col-md-1">
+            <table class="table table-striped table-hover table-bordered">
+              <tr><th>留存\起始</th></tr>
+              <tr><td>新用户数</td></tr>
+              <tr ng-if="vm.selectedPeriod==='week'" ng-repeat="obj in vm.lastWeekObjs track by $index">
+                <td>
+                  <span tooltip-placement="right" tooltip="{{obj.weekStr}}">{{obj.week}}周</span>
+                </td>
+              </tr>
+               <tr ng-if="vm.selectedPeriod==='month'" ng-repeat="obj in vm.lastMonthObjs track by $index">
+                <td>
+                  <span tooltip-placement="right">{{obj.month}}月</span>
+                </td>
+              </tr>
+            </table>
+            <!--<div class="btn btn-default">留存\起始</div>-->
+          </div>
+          <div class="col-md-11">
+            <table class="table table-striped table-hover table-bordered">
+              <tr>
+                <th style="width:{{100/vm.firstWeekObjs.length}}%;" ng-if="vm.selectedPeriod==='week'" ng-repeat="obj in vm.firstWeekObjs track by $index">
+                  <span tooltip-placement="bottom" tooltip="{{obj.weekStr}}">{{obj.week}}周</span>
+                  <!-- {{obj.weekStr.split('~')[0]}} -->
+                </th>
+
+                 <th style="width:{{100/vm.firstMonthObjs.length}}%;" ng-if="vm.selectedPeriod==='month'" ng-repeat="obj in vm.firstMonthObjs track by $index">
+                  <span tooltip-placement="bottom">{{obj.month}}月</span>
+                </th>
+              </tr>
+              <tr>
+                <td ng-repeat="count in vm.firstCount track by $index">
+                  {{count}}
+                </td>
+              </tr>
+
+              <tr ng-repeat="row in vm.tableArray">
+                <td zhaimi-bgc bgc-rate="col.rate" start-color="'#00ff00'" end-color="'#004400'" ng-repeat="col in row track by $index">
+                  <span style="color:#fff" ng-if="col" tooltip-placement="top" tooltip="留存{{col.currentCount}} / 起始{{col.firstCount}} = {{col.rate | rate}}">{{col.rate | rate}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+       <!--  <div class="row">
+          <div class="col-md-1">
+            <table class="table table-striped table-hover table-bordered">
+              <tr ng-repeat="obj in vm.lastWeekObjs track by $index">
+                <td>
+                  <span tooltip-placement="right" tooltip="{{obj.weekStr}}">{{obj.week}}周</span>
+                </td>
+              </tr>
+            </table>
+          </div> -->
+         <!--  <div class="col-md-11">
+            <table class="table table-hover table-bordered">
+              <tr ng-repeat="row in vm.tableArray">
+                <td zhaimi-bgc bgc-rate="col.rate" start-color="'#00ff00'" end-color="'#004400'" ng-repeat="col in row track by $index">
+                  <span style="color:#fff" ng-if="col" tooltip-placement="top" tooltip="留存{{col.currentCount}} / 起始{{col.firstCount}} = {{col.rate | rate}}">{{col.rate | rate}}</span>
+                </td>
+              </tr>
+            </table>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <!--<h3>周平均留存率趋势图</h3>-->
+      <div class="btn-group">
+        <button class="btn" ng-class="{'btn-primary' : vm.rateAvgType === 'times', 'btn-white': vm.rateAvgType !== 'times'}" ng-click="vm.selectRateAvgType('times')"
+        type="button">相对日期留存</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.rateAvgType === 'current', 'btn-white': vm.rateAvgType !== 'current'}"
+        ng-click="vm.selectRateAvgType('current')" type="button">绝对日期留存</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineOption" style="height:300px;"></div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <th ng-repeat="head in vm.rateTable.thead">
+              <span tooltip-placement="top" tooltip="{{vm.rateTable.lastWeekObjs[$index].weekStr}}">{{head}}</span>
+            </th>
+          </thead>
+          <tr>
+            <td ng-repeat="rate in vm.rateTable.tbody track by $index">{{rate}}%</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

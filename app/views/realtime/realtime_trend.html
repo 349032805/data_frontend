@@ -1,0 +1,43 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-horizontal">
+      <div class="col-md-9">
+        <h3>{{vm.today}} 全国实时走势{{ vm.provData.length === 0 ? "-(暂无数据)" : "" }}</h3>
+      </div>
+      <!--<div class="col-md-2">
+        <label class="control-label pull-right">5秒自动刷新</label>
+      </div>
+      <div class="col-md-1">
+        <button ng-click="vm.onRefrash()" class="btn pull-right" ng-class="{'btn-primary': !vm.refrashIsAble, 'btn-danger': vm.refrashIsAble}">{{!vm.refrashIsAble ? "开启" : "关闭"}}</button>
+      </div>-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="btn-group">
+            <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'salesVolume', 'btn-white': vm.lineGroup.index !== 'salesVolume'}"
+            ng-click="vm.selectLineGroup('salesVolume')" type="button">用户订单数</button>
+            <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'sales', 'btn-white': vm.lineGroup.index !== 'sales'}"
+            ng-click="vm.selectLineGroup('sales')" type="button">用户订单金额</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <button class="btn pull-right m-l-md" ng-click="vm.stopLineAutoRefrash()" ng-class="{'btn-primary': !vm.lineAutoRefrash, 'btn-danger': vm.lineAutoRefrash}">{{vm.lineAutoRefrash ? "暂停" : "开启"}}</button>
+          <div class="pull-right">
+            <h3>每5秒自动刷新</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.option" style="height:340px;"></div>
+    </div>
+  </div>
+</div>

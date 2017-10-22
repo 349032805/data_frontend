@@ -1,0 +1,151 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择微仓</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedAreas" ng-change="vm.selectAreas(vm)">
+          <div ui-select-match placeholder="微仓不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="area in vm.areas | filter: $select.search">
+            <span ng-bind-html="area.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">开始时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+          max-date="vm.yesterday" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <label class="col-md-1 control-label">截止时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.end.model" ng-change="vm.selectEnd()"
+          min-date="vm.datepicker.start.model" max-date="vm.yesterday" is-open="vm.datepicker.end.open" close-text="关闭" current-text="今天"
+          clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('end')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-title">
+          <h2>汇总数据</h2>
+        </div>
+        <div class="ibox-content">
+          <div class="row m-b-sm m-t-sm">
+            <div class="col-xs-4">
+              <h3 class="stats-label">{{vm.rectData[0].thead}}</h3>
+              <h3>{{vm.rectData[0].num | number:2}}</h3>
+            </div>
+            <div class="col-xs-4">
+              <h3 class="stats-label">{{vm.rectData[1].thead}}</h3>
+              <h3>{{vm.rectData[1].num | number}}</h3>
+            </div>
+            <div class="col-xs-4">
+              <h3 class="stats-label">{{vm.rectData[2].thead}}</h3>
+              <h3>{{vm.rectData[2].num | number:2}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row m-b-sm m-t-sm">
+            <div class="col-xs-4">
+              <h3 class="stats-label">{{vm.rectData[3].thead}}</h3>
+              <h3>{{vm.rectData[3].num | number:2}}</h3>
+            </div>
+            <div class="col-xs-4">
+              <h3 class="stats-label">{{vm.rectData[4].thead}}</h3>
+              <h3>{{vm.rectData[4].num | number:2}}</h3>
+            </div>
+            <div class="col-xs-4">
+              <h3 class="stats-label">无效订单金额</h3>
+              <h3>{{vm.salePieData.totalCanceledPrice | number:2}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row m-b-sm m-t-sm">
+            <div class="col-xs-4">
+              <h3 class="stats-label">无效订单数</h3>
+              <h3>{{vm.salePieData.totalCanceledNum | number}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div zhaimi-echarts option="vm.activity.pieOption" style="height:400px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>top50商品销量排名</h2>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table ng-table="vm.tableParams" class="table table-striped table-hover table-bordered">
+          <tr ng-repeat="row in $data">
+            <td style="width:70px" class="text-center" data-sortable="'rank'" data-title="'排名'">{{row.rank + 1}}</td>
+            <td style="width:340px" data-title="'商品名'">{{row.productName}}</td>
+            <td data-sortable="'productAvgPrice'" data-title="'商品平均单价'">{{row.productAvgPrice | number:2}}</td>
+            <td data-title="'商品来源'">{{row.supplier}}</td>
+            <td data-sortable="'productSaleQuantity'" data-title="'商品出货量'">{{row.productSaleQuantity | number}}</td>
+            <td data-sortable="'productSalePrice'" data-title="'商品出货额'">{{row.productSalePrice | number:2}}</td>
+            <td data-sortable="'profits'" data-title="'毛利额'">{{row.profits | number:2}}</td>
+            <td data-sortable="'profitsRate'" data-title="'毛利率'">{{(row.profitsRate * 100 | number:2) + '%'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>

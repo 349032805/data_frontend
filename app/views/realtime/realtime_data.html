@@ -1,0 +1,186 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-horizontal">
+      <div class="col-md-9">
+        <h3>{{vm.now}} 全国实时数据{{ vm.provData.length === 0 ? "-(暂无数据)" : "" }}</h3>
+      </div>
+      <!--<div class="col-md-2">
+        <label class="control-label pull-right">5秒自动刷新</label>
+      </div>
+      <div class="col-md-1">
+        <button ng-click="vm.onRefrash()" class="btn pull-right" ng-class="{'btn-primary': !vm.refrashIsAble, 'btn-danger': vm.refrashIsAble}">{{!vm.refrashIsAble ? "开启" : "关闭"}}</button>
+      </div>-->
+    </div>
+  </div>
+  <div class="row" ng-if="root.getManager().districtType !== 'city'">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <div class="ibox" ng-if="root.getManager().districtType !== 'city'">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="btn-group">
+            <!--<button class="btn" ng-class="{'btn-primary' : vm.map.index === 'sumSale', 'btn-white': vm.map.index !== 'sumSale'}"
+        ng-click="vm.selectMap('sumSale')" type="button">总交易额</button>-->
+            <button class="btn" ng-class="{'btn-primary' : vm.map.index === 'sumSalesVolume', 'btn-white': vm.map.index !== 'sumSalesVolume'}"
+            ng-click="vm.selectMap('sumSalesVolume')" type="button">用户订单数</button>
+            <button class="btn" ng-class="{'btn-primary' : vm.map.index === 'sales', 'btn-white': vm.map.index !== 'sales'}" ng-click="vm.selectMap('sales')"
+            type="button">用户订单金额</button>
+            <!--<button class="btn" ng-class="{'btn-primary' : vm.map.index === 'sumMiniSupplierSales', 'btn-white': vm.map.index !== 'sumMiniSupplierSales'}"
+        ng-click="vm.selectMap('sumMiniSupplierSales')" type="button">微仓出货金额</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.map.index === 'sumUniqCustomerNumber', 'btn-white': vm.map.index !== 'sumUniqCustomerNumber'}"
+        ng-click="vm.selectMap('sumUniqCustomerNumber')" type="button">独立用户数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.map.index === 'storeNumber', 'btn-white': vm.map.index !== 'storeNumber'}"
+        ng-click="vm.selectMap('storeNumber')" type="button">有单夜猫店数</button>-->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="pull-right">
+            <h3>每5秒自动刷新</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.map.option" style="height:540px;"></div>
+    </div>
+  </div>
+
+  <!--<div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="btn-group">
+            <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'salesVolume', 'btn-white': vm.lineGroup.index !== 'salesVolume'}"
+            ng-click="vm.selectLineGroup('salesVolume')" type="button">用户订单数</button>
+            <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'sales', 'btn-white': vm.lineGroup.index !== 'sales'}"
+            ng-click="vm.selectLineGroup('sales')" type="button">用户订单金额</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <button class="btn pull-right m-l-md" ng-click="vm.stopLineAutoRefrash()" ng-class="{'btn-primary': !vm.lineAutoRefrash, 'btn-danger': vm.lineAutoRefrash}">{{vm.lineAutoRefrash ? "暂停" : "开启"}}</button>
+          <div class="pull-right">
+            <h3>每5秒自动刷新</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.option" style="height:340px;"></div>
+    </div>
+  </div>-->
+
+  <!--<div class="ibox">
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>{{vm.map.index === 'sumSalesVolume' ? '订单数' : vm.map.index === 'sales' ? '订单金额' : '' }}排名</th>
+              <th>省份</th>
+              <td>用户订单数</td>
+              <td>用户订单金额</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="store-item" ng-repeat="row in vm.provData">
+              <td>{{row.dt}}</td>
+              <td>{{$index+1}}</td>
+              <td>{{row.provinceName}}</td>
+              <td>{{row.sumSalesVolume | number}}</td>
+              <td>{{row.sales | number}}</td>
+            </tr>
+            <tr ng-show="vm.provData.length === 0">
+              <td colspan="5" class="">暂无数据</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>-->
+
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="row">
+        <div class="col-md-6">
+          <h3>全国各级实时数据 -- 测试版</h3>
+        </div>
+        <div class="col-md-6">
+          <div class="pull-right">
+            <h3>每5秒自动刷新</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <h3 class="alert alert-warning">注：点击每行数据显示下一层详细信息，有订单即会点亮小星星噢~O(∩_∩)O哈哈~</h3>
+      <div class="table-responsive">
+        <div class="row form-group form-horizontal">
+          <div class="col-md-6">
+            <ol class="breadcrumb">
+              <li ng-repeat="nav in vm.queryTemp">
+                <a style="font-size:16px;" ng-click="vm.clickNav(nav)">{{nav.name}}</a>
+              </li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-primary pull-right" ng-show="vm.query.type !== 0" ng-click="vm.clickBack()">返回</button>
+          </div>
+        </div>
+        <table class="table table-striped table-hover table-bordered dataTable">
+          <thead>
+            <tr>
+              <th style="width:300px;">{{vm.query.type === 0 ? "大区" : vm.query.type === 1 ? "城市" : vm.query.type === 2 ? "微仓" : vm.query.type ===
+                3 ? "学校" : vm.query.type === 4 ? "店铺" : ""}}</th>
+              <th ng-if="vm.query.type === 2">微仓负责人</th>
+              <th ng-if="vm.query.type === 4">店长</th>
+              <!--<th ng-if="vm.query.type === 2">营业店铺数</th>-->
+              <th ng-class="{'sorting_desc': vm.orderByParams === '-orderNum', 'sorting_asc': vm.orderByParams === 'orderNum', sorting: vm.orderByParams.indexOf('orderNum') < 0}" ng-click="vm.orderBy('orderNum')">用户订单数</th>
+              <th ng-class="{'sorting_desc': vm.orderByParams === '-totalPrice', 'sorting_asc': vm.orderByParams === 'totalPrice', sorting: vm.orderByParams.indexOf('totalPrice') < 0}" ng-click="vm.orderBy('totalPrice')">用户订单金额</th>
+              <!--<td>开店时长</td>-->
+               <th ng-if="vm.query.type === 4">营业时长(小时)</th>
+              <th ng-class="{'sorting_desc': vm.orderByParams === '-averagePrice', 'sorting_asc': vm.orderByParams === 'averagePrice', sorting: vm.orderByParams.indexOf('averagePrice') < 0}" ng-click="vm.orderBy('averagePrice')">平均客单价</th>
+              <!-- <th ng-if="vm.query.type === 2">覆盖店铺数</th> -->
+              <th ng-if="vm.query.type != 4">日活跃店铺数</th>
+              <th ng-if="vm.query.type === 4">日活跃</th>
+              <th ng-class="{'sorting_desc': vm.orderByParams === '-orderPhoneRate', 'sorting_asc': vm.orderByParams === 'orderPhoneRate', sorting: vm.orderByParams.indexOf('orderPhoneRate') < 0}" ng-click="vm.orderBy('orderPhoneRate')" ng-if="vm.query.type === 4">订单用户比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="store-item" ng-repeat="row in vm.realTimeData | orderBy: vm.orderByParams track by $index" ng-click="vm.clickNext(row)">
+              <td style="width:300px;"><i class="fa fa-star" ng-if="!!row.orderNum" style="color:#FFDC35"></i> <i class="fa fa-star-o" ng-if="!row.orderNum"></i>                {{row.name}}</td>
+              <td ng-if="vm.query.type === 2">
+                <span tooltip-placement="top" tooltip="联系方式{{row.merchantPhone}}">
+                {{row.merchantName}}</span>
+              </td>
+              <td ng-if="vm.query.type === 4">
+                <span tooltip-placement="top" tooltip="联系方式{{row.merchantPhone}}">
+                {{row.merchantName}}</span>
+              </td>
+              <!--<th ng-if="vm.query.type === 2">{{row.openStoreNum | number}}</th>-->
+              <td>{{row.orderNum | number}}</td>
+              <td>{{row.totalPrice | number:2}}</td>
+              <!--<td>{{(row.openSecond | number:2) + "小时"}}</td>-->
+              <td ng-if="vm.query.type === 4">{{row.openTime}}</td>
+              <td>{{row.averagePrice | number:2}}</td>
+              <!-- <td ng-if="vm.query.type === 2">{{row.coverStoreNum | number}}</td> -->
+              <td ng-if="vm.query.type != 4">{{row.activeNum}}</td>
+              <td ng-if="vm.query.type === 4">
+                  <i class="fa fa-heart" ng-if="!!row.isActive" style="color:red"></i>
+                  <i class="fa fa-heart-o" ng-if="!row.isActive"></i>
+              </td>
+              <td ng-if="vm.query.type === 4">{{row.orderPhoneRate}}</td>
+            </tr>
+            <tr ng-show="vm.realTimeData.length === 0">
+              <td colspan="6" class="">暂无数据</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,119 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label" ng-show="root.getManager().districtType === 'country'">选择大区</label>
+      <div class="col-md-3" ng-show="root.getManager().districtType === 'country'">
+        <div ui-select multiple ng-model="vm.selectedZones" ng-change="vm.selectZones(vm)">
+          <div ui-select-match placeholder="大区不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="zone in vm.zones | filter: $select.search">
+            <span ng-bind-html="zone.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择城市</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedCitys" ng-change="vm.selectCitys(vm)">
+          <div ui-select-match placeholder="城市不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="city in vm.citys | filter: $select.search">
+            <span ng-bind-html="city.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+      <label class="col-md-1 control-label">选择微仓</label>
+      <div class="col-md-3">
+        <div ui-select multiple ng-model="vm.selectedAreas" ng-change="vm.selectAreas(vm)">
+          <div ui-select-match placeholder="微仓不限">{{$item.name}}</div>
+          <div ui-select-choices repeat="area in vm.areas | filter: $select.search">
+            <span ng-bind-html="area.name | highlight: $select.search"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group form-horizontal">
+      <label class="col-md-1 control-label">开始时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.start.model" ng-change="vm.selectStart()"
+          max-date="vm.yesterday" is-open="vm.datepicker.start.open" close-text="关闭" current-text="今天" clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('start')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <label class="col-md-1 control-label">截止时间</label>
+      <div class="col-md-3">
+        <span class="input-group">
+          <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="vm.datepicker.end.model" ng-change="vm.selectEnd()"
+          min-date="vm.datepicker.start.model" max-date="vm.yesterday" is-open="vm.datepicker.end.open" close-text="关闭" current-text="今天"
+          clear-text="清空">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-white" ng-click="vm.openDatepicker('end')">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary pull-right" ng-click="vm.onSearch()">查询</button>
+      </div>
+      <!--<div class="form-group col-md-4 form-horizontal">
+        <button class="btn btn-primary pull-right" ng-csv="vm.exportCsv" add-bom="true" csv-header="vm.csvHeader" lazy-load="true"
+        filename="微仓数据-{{vm.query.start + '至' + vm.query.end}}.csv" field-separator=",">导出</button>
+      </div>--></div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" ng-repeat="rect in vm.rectData">
+      <div rect-block rect-data="rect"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <div class="btn-group">
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'wholesalerSkuNumber', 'btn-white': vm.lineGroup.index !== 'wholesalerSkuNumber'}"
+        ng-click="vm.selectLineGroup('wholesalerSkuNumber')" type="button">批发商SKU数</button>
+        <button class="btn" ng-class="{'btn-primary' : vm.lineGroup.index === 'brandSkuNumber', 'btn-white': vm.lineGroup.index !== 'brandSkuNumber'}"
+        ng-click="vm.selectLineGroup('brandSkuNumber')" type="button">品牌商SKU数</button>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <div zhaimi-echarts option="vm.lineGroup.option" style="height:300px;"></div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table ng-table="vm.firstTable.tableParams" class="table table-striped table-hover table-bordered">
+          <tr ng-repeat="row in $data">
+            <td data-title="'区域'">{{row.zoneName}}</td>
+            <td data-title="'批发商名称'">{{row.wholesalerName}}</td>
+            <td data-title="'批发商ID'">{{row.wholesalerId}}</td>
+            <td data-title="'批发商SKU数'" data-sortable="'wholesalerSkuNumber'">{{row.wholesalerSkuNumber}}</td>
+            <td data-title="'批发商销量'" data-sortable="'wholesalerSalesVolume'">{{row.wholesalerSalesVolume}}</td>
+            <td data-title="'批发商销售额'" data-sortable="'wholesalerSales'">{{row.wholesalerSales}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="ibox">
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table ng-table="vm.secondTable.tableParams" class="table table-striped table-hover table-bordered">
+          <tr ng-repeat="row in $data">
+            <td data-title="'区域'">{{row.zoneName}}</td>
+            <td data-title="'品牌商名称'">{{row.brandName}}</td>
+            <td data-title="'品牌商ID'">{{row.brandId}}</td>
+            <td data-title="'品牌商SKU数'" data-sortable="'brandSkuNumber'">{{row.brandSkuNumber}}</td>
+            <td data-title="'品牌商销量'" data-sortable="'brandSalesVolume'">{{row.brandSalesVolume}}</td>
+            <td data-title="'品牌商销售额'" data-sortable="'brandSales'">{{row.brandSales}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>

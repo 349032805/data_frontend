@@ -1,0 +1,63 @@
+<!--<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>红包活动数据监控</h2>
+  </div>
+  <div class="col-lg-2"></div>
+</div>-->
+<div class="wrapper wrapper-content">
+  <div class="ibox-content m-b-sm border-bottom">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="">已发放红包数：</label>
+        <button class="btn btn-primary" tooltip-placement="bottom" tooltip="个">{{vm.bonusSumdata.quantity}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已发放红包金额：</label>
+        <button class="btn btn-danger" tooltip-placement="bottom" tooltip="$$$">{{vm.bonusSumdata.money}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已使用红包数：</label>
+        <button class="btn btn-primary" tooltip-placement="bottom" tooltip="个">{{vm.bonusSumdata.sent_quantity}}</button>
+      </div>
+      <div class="col-md-3">
+        <label for="">已使用红包金额：</label>
+        <button class="btn btn-danger" tooltip-placement="bottom" tooltip="$$$">{{vm.bonusSumdata.sent_money}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="ibox">
+    <div class="ibox-title">
+      <h5>红包使用状况</h5>
+    </div>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>微仓</th>
+              <td>城市</td>
+              <td>大区</td>
+              <th>已发红包个数</th>
+              <th>已发红包金额</th>
+              <th>已使用红包个数</th>
+              <th>已使用红包金额</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="store-item" ng-repeat="row in vm.bonusDetaildata | orderBy:'-quantity'">
+              <td>{{row.store_id}}</td>
+              <td>{{row.store_name}}</td>
+              <td>{{row.city_name}}</td>
+              <td>{{row.zone_name}}</td>
+              <td>{{row.quantity}}</td>
+              <td>{{row.money}}</td>
+              <td>{{row.sent_quantity}}</td>
+              <td>{{row.sent_money}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
